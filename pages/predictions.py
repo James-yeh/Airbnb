@@ -30,16 +30,20 @@ model = load('assets/pipeline.joblib')
 
 # Reference https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
 
-def predict(room_type, property_type, accomodates, beds, bedrooms, amenities):
+def predict(
+    room_type, property_type, accomodates, beds, bedrooms,
+    host_response_time, host_is_superhost, host_identity_verified
+    ):
     df = pd.DataFrame(
         columns = 
             [
             'room_type', 'property_type', 'accomodates', 'beds',
-            'bedrooms', 'amenities'
+            'bedrooms', 'host_response_time', 'is_superhost', 'host_id_verify'
             ],
         data = 
             [
-                [room_type, property_type, accomodates, beds, bedrooms, amenities]
+                [room_type, property_type, accomodates, beds, bedrooms,
+                host_response_time, host_is_superhost, host_identity_verified]
             ]
     )
     y_pred = model.best_estimator_.predict(df)
@@ -272,7 +276,7 @@ row4 = dbc.Container(
     ]
 )
 
-layout = dbc.Container(
+inputs = dbc.Container(
     [
     dbc.Row(row1),
     dbc.Row(row2),
@@ -282,3 +286,18 @@ layout = dbc.Container(
     dbc.Row(row4)
     ]
 )
+
+column1 = dbc.Col(
+    [
+        dcc.Markdown(
+            """
+
+            * Your calculated 
+
+            """
+        ),
+        dcc.Link(dbc.Button('Calculate', color='primary'), href='/predictions')
+    ],
+    md=0)
+
+layout = dbc.Row([column1])

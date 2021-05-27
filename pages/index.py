@@ -8,23 +8,27 @@ import plotly.express as px
 
 # Imports from this application
 from app import app
+from .predictions import inputs, row1, row2, row3, row4
 
 # 2 column layout. 1st column width = 4/12
 # https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
 # dcc.Markdown reference
 # https://dash.plotly.com/dash-core-components/markdown
-column1 = dbc.Col(
+
+layout = html.Div(
     [
-        dcc.Markdown(
-            """
-
-            *Ever wonder how much you should be charged for an Airbnb?*
-            
-            #### Find a rough estimation now!
-
-            """
-        ),
-        dcc.Link(dbc.Button('Calculate', color='primary'), href='/predictions')
-    ],
-    md=0,)
-layout = dbc.Row([column1])
+        inputs,
+        html.Hr(),
+        dbc.Row(
+            [
+                dbc.Col(
+                    dcc.Link(dbc.Button('Calculate', color='primary'), href='/predictions')
+                )
+            ],
+            align='center',
+        )
+    ], 
+    style={
+        'background-image':'url("/assets/background.jpg")'
+    }
+)
