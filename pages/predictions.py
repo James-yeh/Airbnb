@@ -14,32 +14,44 @@ from app import app
 model = load('assets/pipeline.joblib')
 
 @app.callback(
-    Output('output-container', 'children'),
+    Output('prediction-values', 'children'),
     [
-        Input('room-type', 'value'),
+        Input('room_type', 'value'),
+        Input('property_type', 'value'),
         Input('accomodates', 'value'),
         Input('beds', 'value'),
         Input('bedrooms', 'value'),
-        Input('property-type', 'value'),
-        Input('basic-features', 'value')
+        Input('amenities', 'value'),
     ]
 )
 
 # Reference https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
 
-def predict(property_type, room_type, accommodates, bathrooms, bedrooms, beds,
-            city):
+def predict(room_type, property_type, accomodates, beds, bedrooms, amenities):
     df = pd.DataFrame(
-        columns=["property_type", "room_type", "accommodates", "bathrooms",
-                 "bedrooms", "beds", "city"],
-        data=[
-            [property_type, room_type, accommodates, bathrooms, bedrooms, beds,
-             city]])
-    y_pred = model.predict(df)[0][0]
-    result = np.exp(y_pred)
-    return np.round(result, 2)
+        columns = 
+            [
+            'room_type', 'property_type', 'accomodates', 'beds',
+            'bedrooms', 'amenities'
+            ],
+        data = 
+            [
+                [room_type, property_type, accomodates, beds, bedrooms, amenities]
+            ]
+    )
+    y_pred = model.best_estimator_.predict(df)
+    results = np.round(np.exp(y_pred), 2)
+    return print("$", results)
 
-row1 = dbc.Container(
+
+# Layout
+row1 = dbc.Col(
+    children=[
+    html.Div(id='prediction-values', className='lead')
+    ]
+)
+
+row2 = dbc.Container(
     [
        dbc.Row(
             [
@@ -47,7 +59,7 @@ row1 = dbc.Container(
                     [
                         dbc.Label('Room Type'),
                         dcc.Dropdown(
-                            id='room-type',
+                            id='room_type',
                             options=[
                                 {"label": "Entire home/apt", "value": "Entire home/apt"},
                                 {"label": "Private room", "value": "Private room"},
@@ -61,7 +73,7 @@ row1 = dbc.Container(
                     [
                         dbc.Label('Property Type'),
                         dcc.Dropdown(
-                            id='property-type',
+                            id='property_type',
                             options=[
                                 {"label": "Entire apartment", "value": "Entire apartment"},
                                 {"label": "Private room in apartment", "value": "Private room in apartment"},
@@ -122,48 +134,61 @@ row1 = dbc.Container(
     ],
 )   
 
-row2 = dbc.Container(
+row3 = dbc.Container(
     [
         dbc.Row(
-            [                        
+            [
                 dbc.Col(
                     [
-                        dbc.Label('Accomodates'),
-                        dcc.Input(
-                            id='accomodates',
-                            type='number',
-                            placeholder='0',
-                            min=1, max=16, step=1   
-                        ),
-                    ]
-                ),
-                dbc.Col(
-                    [
-                        dbc.Label('Beds'),
-                        dcc.Input(
-                            id='beds', 
-                            type='number', 
-                            placeholder='0',
-                            min=1, max=16, step=1   
-                        ),
-                    ]
-                ),
-                dbc.Col(
-                    [
-                        dbc.Label('Bedrooms'),
-                        dcc.Input(
-                            id='bedrooms', 
-                            type='number', 
-                            placeholder='0',
-                            min=1, max=16, step=1   
-                        ),
-                    ]   
-                ),
+                    dbc.Label('Accomodates'),
+                    dcc.Slider(
+                        id='accomodates',
+                        min=1,
+                        max=16,
+                        step=1,
+                        marks={i: '{}'.format(i) for i in range(1,17,1)},
+                        className='mb-5'
+                        )
+                    ]      
+                )    
             ]
         ),
         dbc.Row(
             [
-        
+                dbc.Col(
+                    [
+                    dbc.Label('Beds'),
+                    dcc.Slider(
+                        id='beds',
+                        min=1,
+                        max=16,
+                        step=1,
+                        marks={i: '{}'.format(i) for i in range(1,17,1)},
+                        className='mb-5'
+                        )
+                    ]      
+                )    
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                    dbc.Label('Bedrooms'),
+                    dcc.Slider(
+                        id='bedrooms',
+                        min=1,
+                        max=16,
+                        step=1,
+                        marks={i: '{}'.format(i) for i in range(1,17,1)},
+                        className='mb-5'
+                        )
+                    ]      
+                )    
+            ]
+        ),
+        dbc.Row(
+            [
                 dbc.Col(
                     [
                         dbc.Label('Amenities'),
@@ -194,27 +219,80 @@ row2 = dbc.Container(
     ]
 )
 
+row4 = dbc.Container(
+    [
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        dbc.Label("Host's Response Time"),
+                        dcc.Dropdown(
+                            id='host_response_time',
+                            options=
+                            [
+                                {'label': 'within an hour', 'value': 'within an hour '},
+                                {'label': 'within a few hours', 'value': 'within a few hours'},
+                                {'label': 'within a day ', 'value': 'within a day'},
+                                {'label': 'a few days or more', 'value': 'a few days or more'}
+                            ]
+                        )
+                    ]
+                ),
+                dbc.Col(
+                    [
+                        dbc.Label('Host is superhost?'),
+                        dcc.Dropdown(
+                            id='is_superhost',
+                            options=
+                            [
+                                {'label': 'Yes', 'value':'1.0'},
+                                {'label': 'No', 'value':'0.0'}
+                            ]
+                        )
+                    ]
+                ),
+                dbc.Col(
+                    [
+                        dbc.Label('Host identity verified?'),
+                        dcc.Dropdown(
+                            id='host_id_verify',
+                            options=
+                            [
+                                {'label': 'Yes', 'value':'1.0'},
+                                {'label': 'No', 'value':'0.0'}
+                            ]
+                        )
+                    ]
+                ),
+            ]
+        )
+    ]
+)
+
+row5 = dbc.Container(
+    [
+        dbc.Col(
+            [
+                dbc.Label('Number of Reviews'),
+                dcc.Input(
+                    id='number_of_reviews',
+                    type='number',
+                    step=1
+                )
+            ]
+        ),
+    ]
+)
+
+
 layout = dbc.Container(
     [
-    dbc.Container(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            html.Div(
-                                html.H1(
-                                    ('Airbnb Price Predictor'), className="mb-2"
-                                )
-                            ),
-                            style={'textAlign':'center'},
-                        )
-                    ],
-                ),
-                html.Hr(),
-                dbc.Row(row1),
-                html.Hr(),
-                dbc.Row(row2)
-            ]
-        )  
+    dbc.Row(row1),
+    dbc.Row(row2),
+    html.Hr(),
+    dbc.Row(row3),
+    html.Hr(),
+    dbc.Row(row4),
+    dbc.Row(row5)
     ]
 )
