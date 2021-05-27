@@ -38,20 +38,45 @@ navbar = dbc.NavbarSimple(
 # mr (margin right) : https://getbootstrap.com/docs/4.3/utilities/spacing/
 # className='lead' : https://getbootstrap.com/docs/4.3/content/typography/#lead
 footer = dbc.Container(
-    dbc.Row(
-        dbc.Col(
-            html.P(
-                [
-                    html.Span('James Yeh - Allen Dela Virgen - Matthew Blackburn ', className='mr-2')
-                    # html.A(html.I(className='fas fa-envelope-square mr-1'), href='mailto:<you>@<provider>.com'), 
-                    # html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/<you>/<repo>'), 
-                    # html.A(html.I(className='fab fa-linkedin mr-1'), href='https://www.linkedin.com/in/<you>/'), 
-                    # html.A(html.I(className='fab fa-twitter-square mr-1'), href='https://twitter.com/<you>'), 
-                ], 
-                className='lead'
-            )
+    [
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        html.P(
+                            [
+                                html.Span('James Yeh', className='mr-2'),
+                                html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/James-yeh'), 
+                            ], 
+                            className='lead'
+                        )
+                    ]
+                ),
+                dbc.Col(
+                    [
+                        html.P(
+                            [
+                                html.Span('Allen Dela Virgen', className='mr-2'),
+                                html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/matthewblackbu/Airbnb/commits?author=Abdelapv53'), 
+                            ], 
+                            className='lead'
+                        )
+                    ]
+                ),
+                dbc.Col(
+                    [
+                        html.P(
+                            [
+                                html.Span('Matthew Blackburn', className='mr-2'),
+                                html.A(html.I(className='fab fa-github-square mr-1'), href='https://github.com/matthewblackbu'), 
+                            ], 
+                            className='lead'
+                        )
+                    ]
+                ),
+            ]
         )
-    )
+    ]
 )
 
 # App layout (TODO: Clean)
