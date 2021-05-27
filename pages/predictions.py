@@ -11,7 +11,7 @@ from joblib import load
 # Import application
 from app import app
 
-model = load('assets/pipeline2.joblib')
+model = load('assets/final_model.joblib')
 
 @app.callback(
     Output('prediction-values', 'children'),
@@ -45,9 +45,8 @@ def predict(
                 host_response_time, host_is_superhost, host_identity_verified]
             ]
     )
-    y_pred = model.predict(df)
-    results = np.round(np.exp(y_pred), 2)
-    return print("$", results)
+    y_pred = model.predict(df)[0]
+    return f'The Base Estimated price is: ${y_pred:.0f}'
 
 
 # Layout
@@ -196,6 +195,8 @@ amenities_dropdown = html.Div(
         )      
     ]
 )
+
+
 
 row1 = dbc.Col(
     children=[
@@ -442,11 +443,17 @@ column1 = dbc.Col(
                     ],
                     style={'font-weight':'bold'},
                 ),
-                # html.H2(
-                #     [
-                #         print('$', results)
-                #     ]
-                # )
+                html.H2(
+                    [
+                        html.Div(
+                            id='prediction-values',
+                            className='lead',
+                            style={
+                                'font-weight':'bold'
+                            }
+                        )
+                    ]
+                )
             ]
         )
     ],
