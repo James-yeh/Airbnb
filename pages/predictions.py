@@ -22,6 +22,9 @@ model = load('assets/pipeline.joblib')
         Input('beds', 'value'),
         Input('bedrooms', 'value'),
         Input('amenities', 'value'),
+        Input('host_response_time', 'value'),
+        Input('is_superhost', 'value'),
+        Input('host_id_verify', 'value'),
     ]
 )
 
@@ -269,22 +272,6 @@ row4 = dbc.Container(
     ]
 )
 
-row5 = dbc.Container(
-    [
-        dbc.Col(
-            [
-                dbc.Label('Number of Reviews'),
-                dcc.Input(
-                    id='number_of_reviews',
-                    type='number',
-                    step=1
-                )
-            ]
-        ),
-    ]
-)
-
-
 layout = dbc.Container(
     [
     dbc.Row(row1),
@@ -292,7 +279,6 @@ layout = dbc.Container(
     html.Hr(),
     dbc.Row(row3),
     html.Hr(),
-    dbc.Row(row4),
-    dbc.Row(row5)
+    dbc.Row(row4)
     ]
 )
