@@ -11,7 +11,7 @@ from joblib import load
 # Import application
 from app import app
 
-model = load('assets/pipeline2.joblib')
+model = load('assets/pipeline3.joblib')
 
 @app.callback(
     Output('prediction-values', 'children'),
@@ -36,8 +36,8 @@ def predict(
     df = pd.DataFrame(
         columns = 
             [
-            'room_type', 'property_type', 'accomodates', 'beds',
-            'bedrooms', 'host_response_time', 'is_superhost', 'host_id_verify'
+                'room_type', 'property_type', 'accomodates', 'beds',
+                'bedrooms', 'host_response_time', 'is_superhost', 'host_id_verify'
             ],
         data = 
             [
@@ -288,13 +288,21 @@ inputs = dbc.Container(
 
 column1 = dbc.Col(
     [
-        dcc.Markdown(
-            """
-
-            #Your calculated price is:#
-
-            """
-        ),
+        html.Div(
+            [
+                html.H1(
+                    [
+                        'You should expect to pay:'
+                    ],
+                    style={'font-weight':'bold'},
+                ),
+                # html.H2(
+                #     [
+                #         print('$', results)
+                #     ]
+                # )
+            ]
+        )
     ],
     md=0
 )
