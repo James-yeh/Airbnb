@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "*"
+dash = "*"
+dash-bootstrap-components = "*"
+gunicorn = "*"
+plotly = "*"
+pandas = "*"
+category-encoders = "*"
+notebook = "*"
+numpy = "*"
+sklearn = "*"
+shap = "*"
+chart-studio = "*"
+joblib = "*"
+xgboost = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

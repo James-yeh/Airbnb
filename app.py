@@ -1,61 +1,47 @@
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-
+# Import libraries
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__)
+# Bootstrap index for theme selection
+"""
+Go to https://bootswatch.com/ to preview these Bootswatch themes:
+dbc.themes.BOOTSTRAP
+dbc.themes.CERULEAN
+dbc.themes.COSMO
+dbc.themes.CYBORG
+dbc.themes.DARKLY
+dbc.themes.FLATLY
+dbc.themes.JOURNAL
+dbc.themes.LITERA
+dbc.themes.LUMEN
+dbc.themes.LUX
+dbc.themes.MATERIA
+dbc.themes.MINTY
+dbc.themes.PULSE
+dbc.themes.SANDSTONE
+dbc.themes.SIMPLEX
+dbc.themes.SKETCHY
+dbc.themes.SLATE
+dbc.themes.SOLAR
+dbc.themes.SPACELAB
+dbc.themes.SUPERHERO
+dbc.themes.UNITED
+dbc.themes.YETI
+"""
 
-# ------------------------------------------------------------------------------
-# App layout
-app.layout = html.Div([
+# Reference to Plotly Workshop 
+external_stylesheets = [
+    dbc.themes.LUX, # Bootswatch theme
+    'https://use.fontawesome.com/releases/v5.9.0/css/all.css', # for social media icons
+]
 
-    html.H1("Airbnb Price Predictor"),
+meta_tags=[
+    {'name': 'viewport', 'content': 'width=device-width, initial-scale=1'}
+]
 
-    dcc.Dropdown(id="room_type",
-                 options=[
-                     {"label": "Entire home/apt", "value": 99999},
-                     {"label": "Private room", "value": 10000},
-                     {"label": "Shared room","value": 4}],
-                 multi=False,
-                 value=4,
-                 style={'width': "60%"}
-                 ),
-
-    html.Div(id='output_container', children=[]),
-    dcc.Checklist(
-        options=[
-            {'label': 'Air conditioning', 'value': 'air_conditioning'},
-            {'label': 'Kitchen', 'value': 'kitchen'},
-            {'label': 'Heating', 'value': 'heating'},
-            {'label': 'Essentials', 'value': 'essentials'},
-            {'label': 'Hair dryer', 'value': 'hair_dryer'},
-            {'label': 'Iron', 'value': 'iron'},
-            {'label': 'Shampoo', 'value': 'shampoo'},
-            {'label': 'Hangers', 'value': 'hangers'},
-            {'label': 'Fire extinguisher', 'value': 'fire_extinguisher'},
-            {'label': 'First aid kit', 'value': 'first_aid_kit'},
-            {'label': 'Indoor fireplace', 'value': 'indoor_fireplace'},
-            {'label': 'TV', 'value': 'tv'},
-            {'label': 'Cable TV', 'value': 'cable_tv'}
-        ],
-    )
-])
-
-
-# ------------------------------------------------------------------------------
-# callback
-@app.callback(
-    Output(component_id='output_container',component_property='children'),
-    Input(component_id="room_type",component_property='value'),
-) # TODO ^ inputs for all the booleans and add the final not boolean choices
-
-def update_price(room):
-    print(type(room),room)
-    container = room
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, meta_tags=meta_tags)
+# URL-Support see https://dash.plotly.com/urls
+app.config.suppress_callback_exceptions = True
+# Browser title bar
+app.title = 'AirBnb Optimal Price' 
+server = app.server
