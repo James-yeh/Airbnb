@@ -25,10 +25,10 @@ layout = html.Div(
                     dcc.Link(dbc.Button('Calculate', color='primary'), href='/predictions')
                 )
             ],
-            align='center',
         )
     ], 
     style={
-        'background-image':'url("/assets/background.jpg")'
+        # 'background-image':'url("/assets/background.jpg")'
+        'text-align': 'center'
     }
 )

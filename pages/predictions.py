@@ -11,7 +11,7 @@ from joblib import load
 # Import application
 from app import app
 
-model = load('assets/pipeline.joblib')
+model = load('assets/pipeline2.joblib')
 
 @app.callback(
     Output('prediction-values', 'children'),
@@ -21,7 +21,6 @@ model = load('assets/pipeline.joblib')
         Input('accomodates', 'value'),
         Input('beds', 'value'),
         Input('bedrooms', 'value'),
-        Input('amenities', 'value'),
         Input('host_response_time', 'value'),
         Input('is_superhost', 'value'),
         Input('host_id_verify', 'value'),
@@ -46,7 +45,7 @@ def predict(
                 host_response_time, host_is_superhost, host_identity_verified]
             ]
     )
-    y_pred = model.best_estimator_.predict(df)
+    y_pred = model.predict(df)
     results = np.round(np.exp(y_pred), 2)
     return print("$", results)
 
@@ -292,12 +291,12 @@ column1 = dbc.Col(
         dcc.Markdown(
             """
 
-            * Your calculated 
+            #Your calculated price is:#
 
             """
         ),
-        dcc.Link(dbc.Button('Calculate', color='primary'), href='/predictions')
     ],
-    md=0)
+    md=0
+)
 
 layout = dbc.Row([column1])
